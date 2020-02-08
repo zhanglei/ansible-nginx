@@ -1,0 +1,31 @@
+---
+
+- name: install dependence
+  yum:
+    name:
+      - gcc-c++
+      - pcre 
+      - pcre-devel
+      - zlib
+      - zlib-devel
+      - openssl
+      - openssl-devel
+    state: present
+
+- name: unzip nginx binary to the target host
+  unarchive:
+    src: nginx-1.16.1.tar.gz
+    dest: /usr/local/
+
+- name: ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
+  shell: ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
+  args:
+    chdir: /usr/local/nginx-1.16.1
+
+- name: make && make install
+  shell: make && make install
+  args:
+    chdir: /usr/local/nginx-1.16.1
+
+- name: start nginx
+  shell: 'nohup /usr/local/nginx/sbin/nginx &'

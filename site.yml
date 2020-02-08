@@ -1,0 +1,6 @@
+---
+- hosts: nginx
+
+  roles: 
+    - { role: init }
+    - { role: nginx }
